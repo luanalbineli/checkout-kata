@@ -4,7 +4,7 @@ import 'package:checkout/modules/product/domain/repository/product_repository.da
 import 'package:injectable/injectable.dart';
 
 @Injectable(as: ProductRepository)
-class ProductRepositoryImpl extends ProductRepository {
+class ProductRepositoryImpl implements ProductRepository {
   final ProductRemoteDataSource _productRemoteDataSource;
 
   const ProductRepositoryImpl(this._productRemoteDataSource);

@@ -5,9 +5,19 @@ import 'package:flutter/material.dart';
 
 class ProductImage extends StatelessWidget {
   final String? imageUrl;
+  final double width;
+  final double height;
+  final BorderRadius borderRadius;
 
   const ProductImage({
     this.imageUrl,
+    this.width = AppDimens.productImageSize,
+    this.height = AppDimens.productImageSize,
+    this.borderRadius = const BorderRadius.all(
+      Radius.circular(
+        AppDimens.productImageBorderRadius,
+      ),
+    ),
     super.key,
   });
 
@@ -20,15 +30,13 @@ class ProductImage extends StatelessWidget {
     return CachedNetworkImage(
       fit: BoxFit.cover,
       imageUrl: imageUrl!,
-      width: AppDimens.productImageSize,
-      height: AppDimens.productImageSize,
+      width: width,
+      height: height,
       placeholder: (context, __) => _buildImagePlaceholder(context),
       errorWidget: (context, _, __) => _buildImagePlaceholder(context),
       imageBuilder: (context, imageProvider) => DecoratedBox(
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(AppDimens.productImageBorderRadius),
-          ),
+          borderRadius: borderRadius,
           image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
         ),
       ),
@@ -39,13 +47,11 @@ class ProductImage extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: context.theme.colorScheme.outlineVariant,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(AppDimens.productImageBorderRadius),
-        ),
+        borderRadius: borderRadius,
       ),
       child: SizedBox(
-        width: AppDimens.productImageSize,
-        height: AppDimens.productImageSize,
+        width: width,
+        height: height,
         child: Icon(
           Icons.image_rounded,
           color: context.theme.colorScheme.outline,

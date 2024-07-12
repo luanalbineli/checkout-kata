@@ -1,8 +1,7 @@
 class Result<T> {
   Result.success(this.data)
       : type = ResultType.success,
-        exception = null,
-        assert(data != null);
+        exception = null;
 
   Result.error(this.exception)
       : type = ResultType.error,

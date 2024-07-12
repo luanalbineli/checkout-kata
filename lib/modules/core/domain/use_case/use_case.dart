@@ -14,3 +14,18 @@ abstract class AsyncUseCase<TParams, TResult> {
 
   Future<TResult> execute(TParams params);
 }
+
+abstract class UseCase<TParams, TResult> {
+  @nonVirtual
+  Result<TResult> call(TParams params) {
+    try {
+      final data = execute(params);
+      return Result.success(data);
+    } catch (exception) {
+      debugPrint('ERROR: $exception');
+      return Result.error(exception);
+    }
+  }
+
+  TResult execute(TParams params);
+}
