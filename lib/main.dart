@@ -1,4 +1,4 @@
-import 'package:checkout/constants/app_colors.dart';
+import 'package:checkout/constants/app_styles.dart';
 import 'package:checkout/di/injection.dart';
 import 'package:checkout/router/app_router.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +24,9 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp.router(
       title: 'Supermarket Checkout Kata',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
-        useMaterial3: true,
-      ),
+      theme: AppStyles.getTheme(context),
       routerConfig: _appRouter.config(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
