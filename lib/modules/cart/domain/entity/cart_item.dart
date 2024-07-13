@@ -1,8 +1,10 @@
 import 'package:checkout/modules/product/domain/entity/product.dart';
+import 'package:meta/meta.dart';
 
+@immutable
 class CartItem {
   final Product product;
   final int quantity;
 
-  CartItem(this.product, this.quantity);
+  const CartItem(this.product, this.quantity);
 }

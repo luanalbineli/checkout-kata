@@ -1,3 +1,4 @@
+import 'package:checkout/constants/app_constants.dart';
 import 'package:checkout/modules/product/domain/entity/product.dart';
 import 'package:injectable/injectable.dart';
 
@@ -8,9 +9,10 @@ abstract class ProductRemoteDataSource {
 @Injectable(as: ProductRemoteDataSource)
 class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   @override
-  Future<List<Product>> getList() {
-    return Future.value(_productList);
-  }
+  Future<List<Product>> getList() => Future.delayed(
+        AppConstants.queryDuration,
+        () => _productList,
+      );
 
   static const _productList = [
     Product(

@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
+@immutable
 class Product extends Equatable {
   final String sku;
   final String? imageUrl;
