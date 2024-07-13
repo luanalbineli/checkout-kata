@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:checkout/di/injection.dart';
+import 'package:checkout/modules/cart/presentation/widgets/cart_button.dart';
 import 'package:checkout/modules/product/presentation/bloc/product_list_bloc.dart';
 import 'package:checkout/modules/product/presentation/widgets/product_list.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class ProductListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Checkout Kata'),
+        actions: const [CartButton()],
       ),
       body: BlocProvider<ProductListBloc>(
         create: (_) => getIt<ProductListBloc>(),

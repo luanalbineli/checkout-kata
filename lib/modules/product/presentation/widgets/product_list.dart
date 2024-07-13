@@ -84,7 +84,7 @@ class ProductList extends StatelessWidget {
                               ProductPrice(price: product.price),
                               const Spacer(),
                               const Icon(
-                                Icons.add,
+                                Icons.add_rounded,
                               ),
                             ],
                           )

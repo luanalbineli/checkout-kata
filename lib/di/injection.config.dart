@@ -16,6 +16,10 @@ import 'package:checkout/modules/cart/domain/repository/cart_repository.dart'
     as _i7;
 import 'package:checkout/modules/cart/domain/use_case/add_product_cart_use_case.dart'
     as _i9;
+import 'package:checkout/modules/cart/domain/use_case/get_cart_stream_use_case.dart'
+    as _i10;
+import 'package:checkout/modules/cart/presentation/bloc/cart_button_bloc.dart'
+    as _i11;
 import 'package:checkout/modules/product/data/data_source/product_remote_data_source.dart'
     as _i3;
 import 'package:checkout/modules/product/data/repository/product_repository_impl.dart'
@@ -23,11 +27,11 @@ import 'package:checkout/modules/product/data/repository/product_repository_impl
 import 'package:checkout/modules/product/domain/repository/product_repository.dart'
     as _i5;
 import 'package:checkout/modules/product/domain/use_case/get_product_list_use_case.dart'
-    as _i11;
+    as _i13;
 import 'package:checkout/modules/product/presentation/bloc/product_detail_bloc.dart'
-    as _i10;
-import 'package:checkout/modules/product/presentation/bloc/product_list_bloc.dart'
     as _i12;
+import 'package:checkout/modules/product/presentation/bloc/product_list_bloc.dart'
+    as _i14;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
@@ -44,19 +48,23 @@ extension GetItInjectableX on _i1.GetIt {
     );
     gh.factory<_i3.ProductRemoteDataSource>(
         () => _i3.ProductRemoteDataSourceImpl());
-    gh.factory<_i4.CartLocalDataSource>(() => _i4.CartLocalDataSourceImpl());
+    gh.singleton<_i4.CartLocalDataSource>(() => _i4.CartLocalDataSourceImpl());
     gh.factory<_i5.ProductRepository>(
         () => _i6.ProductRepositoryImpl(gh<_i3.ProductRemoteDataSource>()));
     gh.factory<_i7.CartRepository>(
         () => _i8.CartRepositoryImpl(gh<_i4.CartLocalDataSource>()));
     gh.factory<_i9.AddProductCartUseCase>(
         () => _i9.AddProductCartUseCase(gh<_i7.CartRepository>()));
-    gh.factory<_i10.ProductDetailBloc>(
-        () => _i10.ProductDetailBloc(gh<_i9.AddProductCartUseCase>()));
-    gh.factory<_i11.GetProductListUseCase>(
-        () => _i11.GetProductListUseCase(gh<_i5.ProductRepository>()));
-    gh.factory<_i12.ProductListBloc>(
-        () => _i12.ProductListBloc(gh<_i11.GetProductListUseCase>()));
+    gh.factory<_i10.GetCartStreamUseCase>(
+        () => _i10.GetCartStreamUseCase(gh<_i7.CartRepository>()));
+    gh.factory<_i11.CartButtonBloc>(
+        () => _i11.CartButtonBloc(gh<_i10.GetCartStreamUseCase>()));
+    gh.factory<_i12.ProductDetailBloc>(
+        () => _i12.ProductDetailBloc(gh<_i9.AddProductCartUseCase>()));
+    gh.factory<_i13.GetProductListUseCase>(
+        () => _i13.GetProductListUseCase(gh<_i5.ProductRepository>()));
+    gh.factory<_i14.ProductListBloc>(
+        () => _i14.ProductListBloc(gh<_i13.GetProductListUseCase>()));
     return this;
   }
 }

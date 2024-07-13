@@ -26,6 +26,8 @@ class AddProductCartUseCase extends UseCase<AddProductCartParams, void> {
     } else {
       cart.items.add(CartItem(params.product, params.quantity));
     }
+
+    _cartRepository.update(cart);
   }
 }
 

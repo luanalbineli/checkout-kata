@@ -15,4 +15,9 @@ class Product extends Equatable {
 
   @override
   List<Object?> get props => [sku];
+
+  @override
+  String toString() {
+    return 'Product: $sku - $name - $price';
+  }
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:checkout/modules/cart/domain/entity/cart.dart';
 import 'package:injectable/injectable.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 abstract class CartLocalDataSource {
   Cart? _last;
@@ -10,10 +11,12 @@ abstract class CartLocalDataSource {
 
   Cart get();
 
+  Stream<Cart> getStream();
+
   void update(Cart cart);
 }
 
-@Injectable(as: CartLocalDataSource)
+@Singleton(as: CartLocalDataSource)
 class CartLocalDataSourceImpl extends CartLocalDataSource {
   CartLocalDataSourceImpl() {
     _cartStreamController.stream.listen((data) {
@@ -26,6 +29,10 @@ class CartLocalDataSourceImpl extends CartLocalDataSource {
 
   @override
   void update(Cart cart) {
-    // TODO: implement update
+    _cartStreamController.add(cart);
   }
+
+  @override
+  Stream<Cart> getStream() =>
+      Stream.value(get()).followedBy(_cartStreamController.stream);
 }

@@ -14,4 +14,7 @@ class CartRepositoryImpl implements CartRepository {
 
   @override
   void update(Cart cart) => _cartLocalDataSource.update(cart);
+
+  @override
+  Stream<Cart> getStream() => _cartLocalDataSource.getStream();
 }
