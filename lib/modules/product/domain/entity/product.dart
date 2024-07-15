@@ -1,8 +1,8 @@
-import 'package:equatable/equatable.dart';
+import 'package:checkout/modules/product/data/model/product_model.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class Product extends Equatable {
+class Product {
   final String sku;
   final String? imageUrl;
   final String name;
@@ -12,11 +12,8 @@ class Product extends Equatable {
     required this.sku,
     required this.name,
     required this.price,
-    this.imageUrl,
+    required this.imageUrl,
   });
-
-  @override
-  List<Object?> get props => [sku];
 
   @override
   String toString() {

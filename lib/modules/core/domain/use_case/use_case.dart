@@ -25,8 +25,8 @@ abstract class UseCase<TParams, TResult> {
     try {
       final data = execute(params);
       return Result.success(data);
-    } catch (exception) {
-      debugPrint('ERROR: $exception');
+    } catch (exception, stacktrace) {
+      debugPrint('ERROR: $exception - $stacktrace');
       return Result.error(exception);
     }
   }

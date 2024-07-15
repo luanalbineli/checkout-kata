@@ -9,10 +9,12 @@ abstract class PromotionRemoteDataSource {
 @Injectable(as: PromotionRemoteDataSource)
 class PromotionRemoteDataSourceImpl implements PromotionRemoteDataSource {
   @override
-  Future<List<Promotion>> getList() => Future.delayed(
-        AppConstants.queryDuration,
-        () => _promotionList,
-      );
+  Future<List<Promotion>> getList() {
+    return Future.delayed(
+      AppConstants.queryDuration,
+      () => _promotionList,
+    );
+  }
 
   static final _promotionList = [
     PromotionMultipriced(sku: 'B', quantity: 2, price: 1.25),

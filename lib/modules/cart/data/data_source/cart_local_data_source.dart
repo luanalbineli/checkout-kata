@@ -1,19 +1,19 @@
 import 'dart:async';
 
-import 'package:checkout/modules/cart/domain/entity/cart.dart';
+import 'package:checkout/modules/cart/data/model/cart_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 abstract class CartLocalDataSource {
-  Cart? _last;
-  final StreamController<Cart> _cartStreamController =
+  CartModel? _last;
+  final StreamController<CartModel> _cartStreamController =
       StreamController.broadcast();
 
-  Cart get();
+  CartModel get();
 
-  Stream<Cart> getStream();
+  Stream<CartModel> getStream();
 
-  void update(Cart cart);
+  void update(CartModel cartModel);
 }
 
 @Singleton(as: CartLocalDataSource)
@@ -25,14 +25,14 @@ class CartLocalDataSourceImpl extends CartLocalDataSource {
   }
 
   @override
-  Cart get() => _last ?? Cart.empty();
+  CartModel get() => _last ?? CartModel.empty();
 
   @override
-  void update(Cart cart) {
-    _cartStreamController.add(cart);
+  void update(CartModel cartModel) {
+    _cartStreamController.add(cartModel);
   }
 
   @override
-  Stream<Cart> getStream() =>
+  Stream<CartModel> getStream() =>
       Stream.value(get()).followedBy(_cartStreamController.stream);
 }

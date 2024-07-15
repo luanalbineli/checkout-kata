@@ -10,5 +10,8 @@ class ProductRepositoryImpl implements ProductRepository {
   const ProductRepositoryImpl(this._productRemoteDataSource);
 
   @override
-  Future<List<Product>> getList() => _productRemoteDataSource.getList();
+  Future<List<Product>> getList() async {
+    final productList = await _productRemoteDataSource.getList();
+    return productList.map((product) => product.toEntity()).toList();
+  }
 }
