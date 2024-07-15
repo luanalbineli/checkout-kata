@@ -1,5 +1,6 @@
 import 'package:checkout/constants/app_constants.dart';
 import 'package:checkout/modules/product/domain/entity/promotion.dart';
+import 'package:decimal/decimal.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class PromotionRemoteDataSource {
@@ -17,8 +18,15 @@ class PromotionRemoteDataSourceImpl implements PromotionRemoteDataSource {
   }
 
   static final _promotionList = [
-    const PromotionMultipriced(skus: ['B'], quantity: 2, price: 1.25),
+    PromotionMultipriced(
+      skus: const ['B'],
+      quantity: 2,
+      price: Decimal.fromJson('1.25'),
+    ),
     const PromotionGetOneFree(skus: ['C'], quantity: 3),
-    const PromotionMealDeal(skus: ['D', 'E'], price: 3.0),
+    PromotionMealDeal(
+      skus: const ['D', 'E'],
+      price: Decimal.fromJson('3.0'),
+    ),
   ];
 }

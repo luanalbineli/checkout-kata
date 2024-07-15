@@ -1,6 +1,6 @@
 import 'package:checkout/constants/app_dimens.dart';
 import 'package:checkout/extensions/context_extensions.dart';
-import 'package:checkout/extensions/double_extensions.dart';
+import 'package:checkout/extensions/decimal_extensions.dart';
 import 'package:checkout/modules/core/presentation/widgets/full_width.dart';
 import 'package:checkout/modules/product/domain/entity/product.dart';
 import 'package:checkout/modules/product/presentation/bloc/product_detail_bloc.dart';

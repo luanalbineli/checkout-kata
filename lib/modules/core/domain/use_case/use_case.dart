@@ -9,7 +9,8 @@ abstract class AsyncUseCase<TParams, TResult> {
     try {
       final data = await execute(params);
       return Result.success(data);
-    } catch (exception) {
+    } catch (exception, stacktrace) {
+      print('ERROR: $exception - $stacktrace');
       return Result.error(exception);
     }
   }
@@ -27,7 +28,7 @@ abstract class UseCase<TParams, TResult> {
       final data = execute(params);
       return Result.success(data);
     } catch (exception, stacktrace) {
-      debugPrint('ERROR: $exception - $stacktrace');
+      print('ERROR: $exception - $stacktrace');
       return Result.error(exception);
     }
   }

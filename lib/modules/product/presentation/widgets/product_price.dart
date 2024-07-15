@@ -1,6 +1,6 @@
 import 'package:checkout/constants/app_colors.dart';
 import 'package:checkout/extensions/context_extensions.dart';
-import 'package:checkout/extensions/double_extensions.dart';
+import 'package:checkout/extensions/decimal_extensions.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 

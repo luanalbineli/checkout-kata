@@ -40,10 +40,7 @@ class GetCartDetailUseCase extends AsyncUseCase<Cart, CartDetail> {
     }
 
     return CartDetail(
-      grossAmount: 10.toDecimal(),
-      netAmount: 8.toDecimal(),
-      discountAmount: 2.toDecimal(),
-      items: cartDetailItemList,
+      cartDetailItemList,
     );
   }
 
@@ -60,9 +57,27 @@ class GetCartDetailUseCase extends AsyncUseCase<Cart, CartDetail> {
       return CartDetailItemPromotion(
         product: cartItem.product,
         quantity: cartItem.quantity,
-        netAmount: netAmount,
+        netTotal: netAmount,
         promotion: promotion,
       );
+    } else if (promotion is PromotionMultipriced) {
+      final occurrences = (cartItem.quantity / promotion.quantity).floor();
+      final occurrencesWithDiscountPrice =
+          (occurrences.toDecimal() * promotion.price);
+      final remainingQuantity =
+          cartItem.quantity - (occurrences * promotion.quantity);
+      final netAmount = occurrencesWithDiscountPrice +
+          remainingQuantity.toDecimal() * cartItem.product.price;
+
+      return CartDetailItemPromotion(
+        product: cartItem.product,
+        quantity: cartItem.quantity,
+        netTotal: netAmount,
+        promotion: promotion,
+      );
+    } else {
+      // Meal deal
+      final mealDealPromotion = promotion as PromotionMealDeal;
     }
 
     return null;

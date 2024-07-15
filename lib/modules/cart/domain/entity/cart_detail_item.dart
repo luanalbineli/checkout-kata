@@ -7,15 +7,15 @@ import 'package:meta/meta.dart';
 sealed class CartDetailItem {
   final int quantity;
   final Product product;
-  final Decimal netAmount;
+  final Decimal netTotal;
 
   const CartDetailItem({
     required this.product,
     required this.quantity,
-    required this.netAmount,
+    required this.netTotal,
   });
 
-  Decimal get grossAmount => quantity.toDecimal() * product.price;
+  Decimal get grossTotal => quantity.toDecimal() * product.price;
 }
 
 class CartDetailItemRegular extends CartDetailItem {
@@ -23,7 +23,7 @@ class CartDetailItemRegular extends CartDetailItem {
     required super.product,
     required super.quantity,
   }) : super(
-          netAmount: product.price * quantity.toDecimal(),
+          netTotal: product.price * quantity.toDecimal(),
         );
 }
 
@@ -33,7 +33,7 @@ class CartDetailItemPromotion extends CartDetailItem {
   const CartDetailItemPromotion({
     required super.product,
     required super.quantity,
-    required super.netAmount,
+    required super.netTotal,
     required this.promotion,
   });
 }

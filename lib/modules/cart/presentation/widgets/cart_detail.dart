@@ -1,6 +1,6 @@
 import 'package:checkout/constants/app_dimens.dart';
 import 'package:checkout/extensions/context_extensions.dart';
-import 'package:checkout/extensions/double_extensions.dart';
+import 'package:checkout/extensions/decimal_extensions.dart';
 import 'package:checkout/extensions/text_theme_extensions.dart';
 import 'package:checkout/modules/cart/domain/entity/cart_detail.dart' as entity;
 import 'package:checkout/modules/cart/domain/entity/cart_detail_item.dart';
@@ -92,7 +92,7 @@ class CartDetail extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Text(cartItem.grossAmount.formatWithCurrency),
+                        Text(cartItem.grossTotal.formatWithCurrency),
                         const Spacer(),
                         QuantityPicker(
                           quantity: cartItem.quantity,
@@ -117,24 +117,24 @@ class CartDetail extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text('Subtotal'),
-            Spacer(),
-            Text(cartDetail.grossAmount.formatWithCurrency),
+            const Text('Subtotal'),
+            const Spacer(),
+            Text(cartDetail.grossTotal.formatWithCurrency),
           ],
         ),
         Row(
           children: [
-            Text('Discount'),
-            Spacer(),
-            Text(cartDetail.discountAmount.formatWithCurrency),
+            const Text('Discount'),
+            const Spacer(),
+            Text(cartDetail.discountTotal.formatWithCurrency),
           ],
         ),
         const VerticalMargin(),
         Row(
           children: [
-            Text('Total'),
-            Spacer(),
-            Text(cartDetail.netAmount.formatWithCurrency),
+            const Text('Total'),
+            const Spacer(),
+            Text(cartDetail.netTotal.formatWithCurrency),
           ],
         )
       ],

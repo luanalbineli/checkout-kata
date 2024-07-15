@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -9,7 +10,7 @@ sealed class Promotion {
 
 final class PromotionMultipriced extends Promotion {
   final int quantity;
-  final double price;
+  final Decimal price;
 
   const PromotionMultipriced({
     required super.skus,
@@ -28,7 +29,7 @@ final class PromotionGetOneFree extends Promotion {
 }
 
 final class PromotionMealDeal extends Promotion {
-  final double price;
+  final Decimal price;
 
   const PromotionMealDeal({
     required super.skus,
