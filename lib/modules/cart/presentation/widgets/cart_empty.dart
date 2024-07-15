@@ -1,22 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:checkout/constants/app_dimens.dart';
+import 'package:checkout/constants/app_images.dart';
 import 'package:checkout/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plana_terra/constants/app_colors.dart';
-import 'package:plana_terra/constants/app_dimens.dart';
-import 'package:plana_terra/extensions/context_extensions.dart';
 
-class EmptyState extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String iconAssetPath;
-  final Color? color;
-
-  const EmptyState({
-    required this.title,
-    required this.subtitle,
-    required this.iconAssetPath,
-    this.color,
+class CartEmpty extends StatelessWidget {
+  const CartEmpty({
+    super.key,
   });
 
   @override
@@ -25,17 +16,19 @@ class EmptyState extends StatelessWidget {
       padding: const EdgeInsets.all(AppDimens.defaultMargin),
       child: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(
+              height: AppDimens.defaultMargin2x,
+            ),
             Center(
               child: SvgPicture.asset(
-                iconAssetPath,
-                width: AppDimens.configurationPadlockIconWidth,
-                color: color,
+                AppImages.illustrationEmpty,
+                width: AppDimens.cartImageEmpty,
               ),
             ),
+            const Spacer(),
             Text(
-              title,
+              'Your cart is empty',
               textAlign: TextAlign.center,
               style: context.textTheme.titleMedium,
             ),
@@ -43,11 +36,16 @@ class EmptyState extends StatelessWidget {
               height: AppDimens.defaultMargin05x,
             ),
             Text(
-              subtitle,
+              'You should add at least one item in your cart',
               textAlign: TextAlign.center,
-              style: context.textTheme.subtitle2?.copyWith(
-                color: AppColors.stormGray,
-              ),
+              style: context.textTheme.bodyMedium,
+            ),
+            const SizedBox(
+              height: AppDimens.defaultMargin2x,
+            ),
+            ElevatedButton(
+              onPressed: context.router.maybePop,
+              child: const Text('Go shopping'),
             ),
           ],
         ),

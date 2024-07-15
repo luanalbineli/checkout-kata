@@ -17,8 +17,8 @@ class PromotionRemoteDataSourceImpl implements PromotionRemoteDataSource {
   }
 
   static final _promotionList = [
-    PromotionMultipriced(sku: 'B', quantity: 2, price: 1.25),
-    PromotionGetOneFree(sku: 'C', quantity: 3),
-    PromotionMealDeal(skus: const ['D', 'E'], price: 3.0),
+    const PromotionMultipriced(skus: ['B'], quantity: 2, price: 1.25),
+    const PromotionGetOneFree(skus: ['C'], quantity: 3),
+    const PromotionMealDeal(skus: ['D', 'E'], price: 3.0),
   ];
 }

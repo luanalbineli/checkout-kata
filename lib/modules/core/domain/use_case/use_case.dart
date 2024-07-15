@@ -14,6 +14,7 @@ abstract class AsyncUseCase<TParams, TResult> {
     }
   }
 
+  @visibleForTesting
   Future<TResult> execute(TParams params);
 }
 
@@ -31,5 +32,6 @@ abstract class UseCase<TParams, TResult> {
     }
   }
 
+  @visibleForTesting
   TResult execute(TParams params);
 }

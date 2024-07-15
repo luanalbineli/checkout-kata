@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:checkout/modules/cart/domain/use_case/add_product_cart_use_case.dart';
 import 'package:checkout/modules/product/domain/entity/product.dart';
+import 'package:decimal/decimal.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
@@ -14,7 +15,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
   final AddProductCartUseCase _addProductCartUseCase;
 
   ProductDetailBloc(this._addProductCartUseCase)
-      : super(const ProductDetailInitial()) {
+      : super(ProductDetailInitial()) {
     on<ProductDetailEventUpdateQuantity>(_updateQuantity);
     on<ProductDetailEventAddCart>(_addProductCard);
   }
@@ -26,7 +27,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
     emit(
       ProductDetailUpdatedQuantity(
         event.quantity,
-        event.quantity * event.product.price,
+        event.quantity.toDecimal() * event.product.price,
       ),
     );
   }
@@ -39,7 +40,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
 
     final result = _addProductCartUseCase.call(params);
     if (result.isSuccess) {
-      emit(const ProductDetailStateItemCartAdded());
+      emit(ProductDetailStateItemCartAdded());
     } else {
       emit(ProductDetailStateItemCartError(state.quantity, state.total));
     }

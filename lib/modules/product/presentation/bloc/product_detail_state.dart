@@ -3,7 +3,7 @@ part of 'product_detail_bloc.dart';
 @immutable
 sealed class ProductDetailState {
   final int quantity;
-  final double total;
+  final Decimal total;
 
   const ProductDetailState(
     this.quantity,
@@ -12,7 +12,7 @@ sealed class ProductDetailState {
 }
 
 final class ProductDetailInitial extends ProductDetailState {
-  const ProductDetailInitial() : super(0, 0);
+  ProductDetailInitial() : super(0, Decimal.zero);
 }
 
 final class ProductDetailUpdatedQuantity extends ProductDetailState {
@@ -20,7 +20,7 @@ final class ProductDetailUpdatedQuantity extends ProductDetailState {
 }
 
 final class ProductDetailStateItemCartAdded extends ProductDetailState {
-  const ProductDetailStateItemCartAdded() : super(0, 0);
+  ProductDetailStateItemCartAdded() : super(0, Decimal.zero);
 }
 
 final class ProductDetailStateItemCartError extends ProductDetailState {

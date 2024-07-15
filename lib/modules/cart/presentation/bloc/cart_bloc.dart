@@ -6,8 +6,8 @@ import 'package:checkout/modules/cart/domain/entity/cart_detail.dart';
 import 'package:checkout/modules/cart/domain/use_case/get_cart_detail_use_case.dart';
 import 'package:checkout/modules/cart/domain/use_case/get_cart_stream_use_case.dart';
 import 'package:checkout/modules/core/domain/use_case/no_params.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';
@@ -47,6 +47,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     if (cartDetailResult.isSuccess) {
       emit(CartStateShowDetail(cartDetailResult.data!));
     } else {
+      debugPrint('ERROR: ${cartDetailResult.exception}');
       emit(const CartStateError());
     }
   }

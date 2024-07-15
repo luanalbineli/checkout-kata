@@ -1,10 +1,11 @@
 import 'package:checkout/constants/app_colors.dart';
 import 'package:checkout/extensions/context_extensions.dart';
 import 'package:checkout/extensions/double_extensions.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 
 class ProductPrice extends StatelessWidget {
-  final double price;
+  final Decimal price;
   final TextStyle? priceTextStyle;
 
   const ProductPrice({

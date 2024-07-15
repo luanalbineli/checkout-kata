@@ -1,36 +1,37 @@
 import 'package:meta/meta.dart';
 
 @immutable
-sealed class Promotion {}
+sealed class Promotion {
+  final List<String> skus;
 
-class PromotionMultipriced extends Promotion {
-  final String sku;
+  const Promotion({required this.skus});
+}
+
+final class PromotionMultipriced extends Promotion {
   final int quantity;
   final double price;
 
-  PromotionMultipriced({
-    required this.sku,
+  const PromotionMultipriced({
+    required super.skus,
     required this.quantity,
     required this.price,
   });
 }
 
-class PromotionGetOneFree extends Promotion {
-  final String sku;
+final class PromotionGetOneFree extends Promotion {
   final int quantity;
 
-  PromotionGetOneFree({
-    required this.sku,
+  const PromotionGetOneFree({
+    required super.skus,
     required this.quantity,
   });
 }
 
-class PromotionMealDeal extends Promotion {
-  final List<String> skus;
+final class PromotionMealDeal extends Promotion {
   final double price;
 
-  PromotionMealDeal({
-    required this.skus,
+  const PromotionMealDeal({
+    required super.skus,
     required this.price,
   });
 }

@@ -1,32 +1,39 @@
 import 'package:checkout/modules/product/domain/entity/product.dart';
 import 'package:checkout/modules/product/domain/entity/promotion.dart';
+import 'package:decimal/decimal.dart';
 import 'package:meta/meta.dart';
 
 @immutable
 sealed class CartDetailItem {
-  const CartDetailItem();
+  final int quantity;
+  final Product product;
+  final Decimal netAmount;
+
+  const CartDetailItem({
+    required this.product,
+    required this.quantity,
+    required this.netAmount,
+  });
+
+  Decimal get grossAmount => quantity.toDecimal() * product.price;
 }
 
 class CartDetailItemRegular extends CartDetailItem {
-  final int quantity;
-  final Product product;
-  final double total;
-
-  const CartDetailItemRegular(this.quantity, this.product, this.total);
+  CartDetailItemRegular({
+    required super.product,
+    required super.quantity,
+  }) : super(
+          netAmount: product.price * quantity.toDecimal(),
+        );
 }
 
 class CartDetailItemPromotion extends CartDetailItem {
-  final int quantity;
-  final Product product;
-  final double grossAmount;
-  final double netAmount;
   final Promotion promotion;
 
-  const CartDetailItemPromotion(
-    this.quantity,
-    this.product,
-    this.grossAmount,
-    this.netAmount,
-    this.promotion,
-  );
+  const CartDetailItemPromotion({
+    required super.product,
+    required super.quantity,
+    required super.netAmount,
+    required this.promotion,
+  });
 }

@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:checkout/constants/app_dimens.dart';
 import 'package:checkout/extensions/context_extensions.dart';
+import 'package:checkout/extensions/text_theme_extensions.dart';
 import 'package:checkout/modules/product/domain/entity/product.dart';
 import 'package:checkout/modules/product/presentation/bloc/product_list_bloc.dart';
 import 'package:checkout/modules/product/presentation/widgets/product_image.dart';
+import 'package:checkout/modules/product/presentation/widgets/product_name.dart';
 import 'package:checkout/modules/product/presentation/widgets/product_price.dart';
 import 'package:checkout/router/app_router.gr.dart';
 import 'package:flutter/material.dart';
@@ -36,9 +38,7 @@ class ProductList extends StatelessWidget {
         children: [
           Text(
             'Products (${state.list.length}):',
-            style: context.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: context.textTheme.screenTitle,
           ),
           const SizedBox(
             height: AppDimens.defaultMargin,
@@ -70,13 +70,8 @@ class ProductList extends StatelessWidget {
                           const SizedBox(
                             height: AppDimens.defaultMargin05x,
                           ),
-                          Text(
-                            product.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: context.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          ProductName(
+                            name: product.name,
                           ),
                           const Spacer(),
                           Row(
