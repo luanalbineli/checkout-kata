@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 
 class QuantityPicker extends StatelessWidget {
   final int quantity;
+  final double inputWidth;
   final Function(int quantity) onPressed;
 
   const QuantityPicker({
     super.key,
     required this.quantity,
     required this.onPressed,
+    this.inputWidth = AppDimens.quantityPickerInputWidth,
   });
 
   @override
@@ -24,7 +26,7 @@ class QuantityPicker extends StatelessWidget {
             width: AppDimens.defaultMargin,
           ),
           SizedBox(
-            width: AppDimens.quantityPickerQuantityWidth,
+            width: inputWidth,
             child: Text(
               quantity.toString(),
               textAlign: TextAlign.center,

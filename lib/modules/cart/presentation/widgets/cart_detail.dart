@@ -8,6 +8,7 @@ import 'package:checkout/modules/cart/presentation/bloc/cart_bloc.dart';
 import 'package:checkout/modules/cart/presentation/widgets/cart_empty.dart';
 import 'package:checkout/modules/cart/presentation/widgets/cart_error.dart';
 import 'package:checkout/modules/cart/presentation/widgets/cart_loading.dart';
+import 'package:checkout/modules/core/presentation/widgets/full_width.dart';
 import 'package:checkout/modules/core/presentation/widgets/margin.dart';
 import 'package:checkout/modules/product/presentation/widgets/product_image.dart';
 import 'package:checkout/modules/product/presentation/widgets/product_name.dart';
@@ -54,15 +55,17 @@ class CartDetail extends StatelessWidget {
             child: _buildCartItemList(state.cartDetail.items),
           ),
           const VerticalMargin(),
-          _buildCartTotals(state.cartDetail),
+          _buildCartTotals(context, state.cartDetail),
           const VerticalMargin(),
+          _buildCheckoutButton(),
         ],
       ),
     );
   }
 
   Widget _buildCartItemList(List<CartDetailItem> items) {
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (_, __) => const VerticalMargin(),
       itemCount: items.length,
       itemBuilder: (context, index) {
         final cartItem = items[index];
@@ -72,32 +75,70 @@ class CartDetail extends StatelessWidget {
               ProductImage(
                 imageUrl: cartItem.product.imageUrl,
               ),
-              const HorizontalMargin(),
+              const HorizontalMargin(
+                margin: AppDimens.defaultMargin05x,
+              ),
               Expanded(
                 child: Column(
+                  //crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Row(
                       children: [
-                        ProductName(
-                          name: cartItem.product.name,
+                        Expanded(
+                          child: ProductName(
+                            name: cartItem.product.name,
+                          ),
                         ),
-                        const Spacer(),
-                        IconButton(
-                          onPressed: () {
-                            // TODO: Implement delete item.
-                          },
-                          icon: const Icon(Icons.delete_rounded),
+                        const HorizontalMargin(
+                          margin: AppDimens.defaultMargin,
+                        ),
+                        SizedBox(
+                          width: AppDimens.cartDeleteButtonSize,
+                          height: AppDimens.cartDeleteButtonSize,
+                          child: IconButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              BlocProvider.of<CartBloc>(context).add(
+                                CartEventDeleteItem(
+                                  cartItem.product.sku,
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.delete_rounded),
+                          ),
                         )
                       ],
                     ),
+                    const VerticalMargin(),
                     Row(
                       children: [
-                        Text(cartItem.grossTotal.formatWithCurrency),
+                        Text(cartItem.netTotal.formatWithCurrency),
+                        if (cartItem.netTotal != cartItem.grossTotal)
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: AppDimens.defaultMargin05x,
+                            ),
+                            child: Text(
+                              cartItem.grossTotal.formatWithCurrency,
+                              style: TextStyle(
+                                color: context.theme.colorScheme.outline,
+                                decoration: TextDecoration.lineThrough,
+                                decorationColor:
+                                    context.theme.colorScheme.outline,
+                              ),
+                            ),
+                          ),
                         const Spacer(),
                         QuantityPicker(
                           quantity: cartItem.quantity,
+                          inputWidth: AppDimens.quantityPickerInputWidth * 0.5,
                           onPressed: (quantity) {
-                            // TODO: Update quantity.
+                            BlocProvider.of<CartBloc>(context).add(
+                              CartEventUpdateItemQuantity(
+                                cartItem.product.sku,
+                                quantity,
+                              ),
+                            );
                           },
                         )
                       ],
@@ -112,7 +153,11 @@ class CartDetail extends StatelessWidget {
     );
   }
 
-  Widget _buildCartTotals(entity.CartDetail cartDetail) {
+  Widget _buildCartTotals(
+    BuildContext context,
+    entity.CartDetail cartDetail,
+  ) {
+    final totalTextStyle = context.textTheme.titleMedium;
     return Column(
       children: [
         Row(
@@ -121,6 +166,9 @@ class CartDetail extends StatelessWidget {
             const Spacer(),
             Text(cartDetail.grossTotal.formatWithCurrency),
           ],
+        ),
+        const VerticalMargin(
+          margin: AppDimens.defaultMargin025x,
         ),
         Row(
           children: [
@@ -132,12 +180,25 @@ class CartDetail extends StatelessWidget {
         const VerticalMargin(),
         Row(
           children: [
-            const Text('Total'),
+            Text(
+              'Total',
+              style: totalTextStyle,
+            ),
             const Spacer(),
-            Text(cartDetail.netTotal.formatWithCurrency),
+            Text(
+              cartDetail.netTotal.formatWithCurrency,
+              style: totalTextStyle,
+            ),
           ],
         )
       ],
     );
   }
+
+  Widget _buildCheckoutButton() => FullWidth(
+        child: ElevatedButton(
+          onPressed: () {},
+          child: const Text('Checkout'),
+        ),
+      );
 }

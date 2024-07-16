@@ -10,3 +10,16 @@ class CartEventUpdate extends CartEvent {
 
   const CartEventUpdate(this.cart);
 }
+
+class CartEventUpdateItemQuantity extends CartEvent {
+  final String productSku;
+  final int quantity;
+
+  const CartEventUpdateItemQuantity(this.productSku, this.quantity);
+}
+
+class CartEventDeleteItem extends CartEvent {
+  final String productSku;
+
+  const CartEventDeleteItem(this.productSku);
+}
