@@ -11,7 +11,8 @@
 import 'package:auto_route/auto_route.dart' as _i4;
 import 'package:checkout/modules/cart/presentation/pages/cart_screen.dart'
     as _i1;
-import 'package:checkout/modules/product/domain/entity/product.dart' as _i6;
+import 'package:checkout/modules/product/domain/entity/product_display.dart'
+    as _i6;
 import 'package:checkout/modules/product/presentation/pages/product_detail_screen.dart'
     as _i2;
 import 'package:checkout/modules/product/presentation/pages/product_list_screen.dart'
@@ -35,7 +36,7 @@ abstract class $AppRouter extends _i4.RootStackRouter {
         routeData: routeData,
         child: _i2.ProductDetailScreen(
           key: args.key,
-          product: args.product,
+          productDisplay: args.productDisplay,
         ),
       );
     },
@@ -67,13 +68,13 @@ class CartRoute extends _i4.PageRouteInfo<void> {
 class ProductDetailRoute extends _i4.PageRouteInfo<ProductDetailRouteArgs> {
   ProductDetailRoute({
     _i5.Key? key,
-    required _i6.Product product,
+    required _i6.ProductDisplay productDisplay,
     List<_i4.PageRouteInfo>? children,
   }) : super(
           ProductDetailRoute.name,
           args: ProductDetailRouteArgs(
             key: key,
-            product: product,
+            productDisplay: productDisplay,
           ),
           initialChildren: children,
         );
@@ -87,16 +88,16 @@ class ProductDetailRoute extends _i4.PageRouteInfo<ProductDetailRouteArgs> {
 class ProductDetailRouteArgs {
   const ProductDetailRouteArgs({
     this.key,
-    required this.product,
+    required this.productDisplay,
   });
 
   final _i5.Key? key;
 
-  final _i6.Product product;
+  final _i6.ProductDisplay productDisplay;
 
   @override
   String toString() {
-    return 'ProductDetailRouteArgs{key: $key, product: $product}';
+    return 'ProductDetailRouteArgs{key: $key, productDisplay: $productDisplay}';
   }
 }
 

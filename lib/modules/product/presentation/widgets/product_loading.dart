@@ -3,8 +3,8 @@ import 'package:checkout/modules/core/presentation/widgets/margin.dart';
 import 'package:checkout/modules/core/presentation/widgets/skeleton_effect.dart';
 import 'package:flutter/material.dart';
 
-class CartLoading extends StatelessWidget {
-  const CartLoading({super.key});
+class ProductLoading extends StatelessWidget {
+  const ProductLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +21,18 @@ class CartLoading extends StatelessWidget {
             ),
             const VerticalMargin(),
             Expanded(
-              child: ListView.separated(
-                separatorBuilder: (_, __) => const VerticalMargin(),
-                itemCount: _numberOfRows,
-                itemBuilder: (_, index) => Container(
-                  height: AppDimens.cartLoadingItemSize,
-                  decoration: SkeletonEffect.containerBoxDecoration,
-                ),
-              ),
+              child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: AppDimens.defaultMargin,
+                    crossAxisSpacing: AppDimens.defaultMargin,
+                  ),
+                  itemCount: _numberOfItems,
+                  itemBuilder: (_, index) {
+                    return Container(
+                      decoration: SkeletonEffect.containerBoxDecoration,
+                    );
+                  }),
             )
           ],
         ),
@@ -36,5 +40,5 @@ class CartLoading extends StatelessWidget {
     );
   }
 
-  static const _numberOfRows = 4;
+  static const _numberOfItems = 6;
 }

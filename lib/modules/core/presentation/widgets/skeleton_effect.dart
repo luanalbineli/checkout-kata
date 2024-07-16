@@ -1,3 +1,4 @@
+import 'package:checkout/constants/app_dimens.dart';
 import 'package:checkout/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -18,4 +19,13 @@ class SkeletonEffect extends StatelessWidget {
       child: child,
     );
   }
+
+  static const containerBoxDecoration = BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.all(
+      Radius.circular(
+        AppDimens.skeletonEffectContainerBorderRadius,
+      ),
+    ),
+  );
 }

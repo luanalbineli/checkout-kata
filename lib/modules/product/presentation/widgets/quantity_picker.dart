@@ -1,5 +1,6 @@
 import 'package:checkout/constants/app_dimens.dart';
 import 'package:checkout/extensions/context_extensions.dart';
+import 'package:checkout/modules/core/presentation/widgets/margin.dart';
 import 'package:flutter/material.dart';
 
 class QuantityPicker extends StatelessWidget {
@@ -22,9 +23,7 @@ class QuantityPicker extends StatelessWidget {
             -1,
             disabled: quantity == 1,
           ),
-          const SizedBox(
-            width: AppDimens.defaultMargin,
-          ),
+          const HorizontalMargin(),
           SizedBox(
             width: inputWidth,
             child: Text(
@@ -33,9 +32,7 @@ class QuantityPicker extends StatelessWidget {
               style: context.textTheme.bodyLarge,
             ),
           ),
-          const SizedBox(
-            width: AppDimens.defaultMargin,
-          ),
+          const HorizontalMargin(),
           _buildSpinButton(
             const Icon(Icons.add_outlined),
             1,

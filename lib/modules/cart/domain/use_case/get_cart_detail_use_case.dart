@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:checkout/extensions/list_extensions.dart';
 import 'package:checkout/modules/cart/domain/entity/cart.dart';
 import 'package:checkout/modules/cart/domain/entity/cart_detail.dart';
 import 'package:checkout/modules/cart/domain/entity/cart_detail_item.dart';
@@ -23,9 +24,7 @@ class GetCartDetailUseCase extends AsyncUseCase<Cart, CartDetail> {
 
     final List<CartDetailItem> cartDetailItemList = [];
     for (final cartItem in params.items) {
-      final promotion = promotions.firstWhereOrNull(
-        (promotion) => promotion.skus.contains(cartItem.product.sku),
-      );
+      final promotion = promotions.getByProductSKU(cartItem.product.sku);
 
       final CartDetailItem cartDetailItem;
       if (promotion != null) {

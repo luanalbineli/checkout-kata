@@ -6,7 +6,7 @@ sealed class ProductListState {}
 final class ProductListStateLoading extends ProductListState {}
 
 final class ProductListStateSuccess extends ProductListState {
-  final List<Product> list;
+  final List<ProductDisplay> list;
 
   ProductListStateSuccess(this.list);
 }

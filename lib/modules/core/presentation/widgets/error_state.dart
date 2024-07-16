@@ -4,8 +4,8 @@ import 'package:checkout/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class CartError extends StatelessWidget {
-  const CartError({super.key});
+class ErrorState extends StatelessWidget {
+  const ErrorState({super.key});
 
   @override
   Widget build(BuildContext context) {

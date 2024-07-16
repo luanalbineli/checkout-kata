@@ -18,4 +18,6 @@ class AppDimens {
   static const double cartLoadingItemSize = 120.0;
   static const double cartErrorImageWidth = 220.0;
   static const double cartDeleteButtonSize = 32.0;
+
+  static const double skeletonEffectContainerBorderRadius = 12.0;
 }

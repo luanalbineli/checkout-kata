@@ -2,7 +2,11 @@ import 'package:checkout/constants/app_dimens.dart';
 import 'package:checkout/extensions/context_extensions.dart';
 import 'package:checkout/extensions/decimal_extensions.dart';
 import 'package:checkout/modules/core/presentation/widgets/full_width.dart';
+import 'package:checkout/modules/core/presentation/widgets/margin.dart';
 import 'package:checkout/modules/product/domain/entity/product.dart';
+import 'package:checkout/modules/product/domain/entity/product_display.dart';
+import 'package:checkout/modules/product/domain/entity/promotion.dart';
+import 'package:checkout/modules/product/domain/entity/promotion_display.dart';
 import 'package:checkout/modules/product/presentation/bloc/product_detail_bloc.dart';
 import 'package:checkout/modules/product/presentation/widgets/product_image.dart';
 import 'package:checkout/modules/product/presentation/widgets/product_price.dart';
@@ -11,19 +15,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductDetail extends StatelessWidget {
-  final Product product;
+  final ProductDisplay productDisplay;
 
-  const ProductDetail({super.key, required this.product});
+  const ProductDetail({super.key, required this.productDisplay});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          height: context.mediaQuery.padding.top,
+        VerticalMargin(
+          margin: context.mediaQuery.padding.top,
         ),
-        _buildProductImageWithOverlay(),
+        _buildProductImageWithOverlay(context),
         Expanded(
           child: _buildProductDetail(context),
         )
@@ -32,6 +36,8 @@ class ProductDetail extends StatelessWidget {
   }
 
   Widget _buildProductDetail(BuildContext context) {
+    final ProductDisplay(:product) = productDisplay;
+
     return Padding(
       padding: const EdgeInsets.all(AppDimens.defaultMargin),
       child: Column(
@@ -43,24 +49,24 @@ class ProductDetail extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(
-            height: AppDimens.defaultMargin05x,
+          const VerticalMargin(
+            margin: AppDimens.defaultMargin05x,
           ),
           const Text(
             'Some fancy product description here. Eget nullam non nisi est sit amet facilisis magna etiam tempor orci eu lobortis elementum nibh',
           ),
           const Spacer(),
-          _buildQuantityPicker(),
-          const SizedBox(
-            height: AppDimens.defaultMargin,
+          _buildQuantityPicker(product),
+          const VerticalMargin(
+            margin: AppDimens.defaultMargin,
           ),
-          _buildAddProductCartButton(context),
+          _buildAddProductCartButton(context, product),
         ],
       ),
     );
   }
 
-  Widget _buildQuantityPicker() {
+  Widget _buildQuantityPicker(Product product) {
     return BlocBuilder<ProductDetailBloc, ProductDetailState>(
         builder: (context, state) {
       return Row(
@@ -75,14 +81,23 @@ class ProductDetail extends StatelessWidget {
                   fontSize: 14,
                 ),
               ),
-              const SizedBox(
-                height: AppDimens.defaultMargin05x,
+              const VerticalMargin(
+                margin: AppDimens.defaultMargin025x,
               ),
               Text(
                 'Total: ${state.total.formatWithCurrency}',
                 style: const TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: 18,
+                ),
+              ),
+              const VerticalMargin(
+                margin: AppDimens.defaultMargin05x,
+              ),
+              Text(
+                '*Discounts are applied in the cart',
+                style: context.textTheme.labelSmall?.copyWith(
+                  color: context.theme.colorScheme.outline,
                 ),
               ),
             ],
@@ -102,10 +117,13 @@ class ProductDetail extends StatelessWidget {
     //
   }
 
-  Widget _buildProductImageWithOverlay() => Stack(
+  Widget _buildProductImageWithOverlay(
+    BuildContext context,
+  ) =>
+      Stack(
         children: [
           ProductImage(
-            imageUrl: product.imageUrl,
+            imageUrl: productDisplay.product.imageUrl,
             width: double.infinity,
             height: AppDimens.productDetailImageHeight,
             borderRadius: BorderRadius.zero,
@@ -117,10 +135,14 @@ class ProductDetail extends StatelessWidget {
               ),
             ),
           ),
+          Positioned.fill(
+            child:
+                _buildPromotionLabel(context, productDisplay.promotionDisplay),
+          ),
         ],
       );
 
-  Widget _buildAddProductCartButton(BuildContext context) {
+  Widget _buildAddProductCartButton(BuildContext context, Product product) {
     return FullWidth(
       child: ElevatedButton(
         onPressed: () {
@@ -129,6 +151,53 @@ class ProductDetail extends StatelessWidget {
           );
         },
         child: const Text('Add to cart'),
+      ),
+    );
+  }
+
+  Widget _buildPromotionLabel(
+    BuildContext context,
+    PromotionDisplay? promotionDisplay,
+  ) {
+    if (promotionDisplay == null) {
+      return const SizedBox.shrink();
+    }
+
+    final String promotionLabel;
+    final PromotionDisplay(:promotion, :products) = promotionDisplay;
+    switch (promotion) {
+      case PromotionGetOneFree():
+        promotionLabel = 'Buy ${promotion.quantity}, get 1 free';
+      case PromotionMultipriced():
+        promotionLabel =
+            'Buy ${promotion.quantity} for ${promotion.price.formatWithCurrency}';
+      case PromotionMealDeal():
+        final labelList = promotion.skus.map((sku) {
+          final product = products.firstWhere((product) => product.sku == sku);
+          return '1 ${product.name}';
+        }).join(' and ');
+        promotionLabel =
+            'Buy $labelList for ${promotion.price.formatWithCurrency}';
+    }
+
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: Padding(
+        padding: const EdgeInsets.only(
+          right: AppDimens.defaultMargin05x,
+        ),
+        child: Chip(
+          padding: EdgeInsets.zero,
+          backgroundColor: context.theme.primaryColor,
+          label: Text(
+            promotionLabel,
+            style: context.textTheme.labelSmall?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1,
+            ),
+          ),
+        ),
       ),
     );
   }

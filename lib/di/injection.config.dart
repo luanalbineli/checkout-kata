@@ -19,7 +19,7 @@ import 'package:checkout/modules/cart/domain/use_case/add_product_cart_use_case.
 import 'package:checkout/modules/cart/domain/use_case/delete_cart_item_use_case.dart'
     as _i13;
 import 'package:checkout/modules/cart/domain/use_case/get_cart_detail_use_case.dart'
-    as _i20;
+    as _i19;
 import 'package:checkout/modules/cart/domain/use_case/get_cart_stream_use_case.dart'
     as _i11;
 import 'package:checkout/modules/cart/domain/use_case/update_cart_item_quantity_use_case.dart'
@@ -44,7 +44,7 @@ import 'package:checkout/modules/product/domain/use_case/get_product_list_use_ca
 import 'package:checkout/modules/product/presentation/bloc/product_detail_bloc.dart'
     as _i15;
 import 'package:checkout/modules/product/presentation/bloc/product_list_bloc.dart'
-    as _i19;
+    as _i20;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
@@ -82,15 +82,17 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i15.ProductDetailBloc(gh<_i10.AddProductCartUseCase>()));
     gh.factory<_i16.PromotionRepository>(() =>
         _i17.PromotionRepositoryImpl(gh<_i4.PromotionRemoteDataSource>()));
-    gh.factory<_i18.GetProductListUseCase>(
-        () => _i18.GetProductListUseCase(gh<_i6.ProductRepository>()));
-    gh.factory<_i19.ProductListBloc>(
-        () => _i19.ProductListBloc(gh<_i18.GetProductListUseCase>()));
-    gh.factory<_i20.GetCartDetailUseCase>(
-        () => _i20.GetCartDetailUseCase(gh<_i16.PromotionRepository>()));
+    gh.factory<_i18.GetProductListUseCase>(() => _i18.GetProductListUseCase(
+          gh<_i6.ProductRepository>(),
+          gh<_i16.PromotionRepository>(),
+        ));
+    gh.factory<_i19.GetCartDetailUseCase>(
+        () => _i19.GetCartDetailUseCase(gh<_i16.PromotionRepository>()));
+    gh.factory<_i20.ProductListBloc>(
+        () => _i20.ProductListBloc(gh<_i18.GetProductListUseCase>()));
     gh.factory<_i21.CartBloc>(() => _i21.CartBloc(
           gh<_i11.GetCartStreamUseCase>(),
-          gh<_i20.GetCartDetailUseCase>(),
+          gh<_i19.GetCartDetailUseCase>(),
           gh<_i12.UpdateCartItemQuantityUseCase>(),
           gh<_i13.DeleteCartItemUseCase>(),
         ));

@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:checkout/di/injection.dart';
 import 'package:checkout/extensions/context_extensions.dart';
-import 'package:checkout/modules/product/domain/entity/product.dart';
+import 'package:checkout/modules/product/domain/entity/product_display.dart';
 import 'package:checkout/modules/product/presentation/bloc/product_detail_bloc.dart';
 import 'package:checkout/modules/product/presentation/widgets/product_detail.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +9,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
 class ProductDetailScreen extends StatelessWidget {
-  final Product product;
+  final ProductDisplay productDisplay;
 
-  const ProductDetailScreen({super.key, required this.product});
+  const ProductDetailScreen({super.key, required this.productDisplay});
 
   @override
   Widget build(BuildContext context) {
     final bloc = getIt<ProductDetailBloc>()
       ..add(
-        ProductDetailEventUpdateQuantity(product, 1),
+        ProductDetailEventUpdateQuantity(productDisplay.product, 1),
       );
 
     return Scaffold(
@@ -31,7 +31,7 @@ class ProductDetailScreen extends StatelessWidget {
           bloc: bloc,
           listener: _handleStateChanges,
           child: ProductDetail(
-            product: product,
+            productDisplay: productDisplay,
           ),
         ),
       ),

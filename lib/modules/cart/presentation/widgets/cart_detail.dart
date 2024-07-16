@@ -6,8 +6,8 @@ import 'package:checkout/modules/cart/domain/entity/cart_detail.dart' as entity;
 import 'package:checkout/modules/cart/domain/entity/cart_detail_item.dart';
 import 'package:checkout/modules/cart/presentation/bloc/cart_bloc.dart';
 import 'package:checkout/modules/cart/presentation/widgets/cart_empty.dart';
-import 'package:checkout/modules/cart/presentation/widgets/cart_error.dart';
 import 'package:checkout/modules/cart/presentation/widgets/cart_loading.dart';
+import 'package:checkout/modules/core/presentation/widgets/error_state.dart';
 import 'package:checkout/modules/core/presentation/widgets/full_width.dart';
 import 'package:checkout/modules/core/presentation/widgets/margin.dart';
 import 'package:checkout/modules/product/presentation/widgets/product_image.dart';
@@ -28,7 +28,7 @@ class CartDetail extends StatelessWidget {
         }
 
         if (state is CartStateError) {
-          return const CartError();
+          return const ErrorState();
         }
 
         if (state is CartStateShowDetail) {
@@ -112,7 +112,12 @@ class CartDetail extends StatelessWidget {
                     const VerticalMargin(),
                     Row(
                       children: [
-                        Text(cartItem.netTotal.formatWithCurrency),
+                        Text(
+                          cartItem.netTotal.formatWithCurrency,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         if (cartItem.netTotal != cartItem.grossTotal)
                           Padding(
                             padding: const EdgeInsets.only(
