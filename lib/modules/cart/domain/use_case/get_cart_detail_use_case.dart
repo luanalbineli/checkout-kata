@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:checkout/modules/cart/domain/entity/cart.dart';
 import 'package:checkout/modules/cart/domain/entity/cart_detail.dart';
 import 'package:checkout/modules/cart/domain/entity/cart_detail_item.dart';
@@ -25,18 +27,15 @@ class GetCartDetailUseCase extends AsyncUseCase<Cart, CartDetail> {
         (promotion) => promotion.skus.contains(cartItem.product.sku),
       );
 
+      final CartDetailItem cartDetailItem;
       if (promotion != null) {
-        final cartDetailItem =
+        cartDetailItem =
             _processItemWithPromotion(cartItem, promotion, params.items);
-        if (cartDetailItem != null) {
-          cartDetailItemList.add(cartDetailItem);
-        }
       } else {
-        cartDetailItemList.add(CartDetailItemRegular(
-          product: cartItem.product,
-          quantity: cartItem.quantity,
-        ));
+        cartDetailItem = _getCartDetailItemRegularFromCartItem(cartItem);
       }
+
+      cartDetailItemList.add(cartDetailItem);
     }
 
     return CartDetail(
@@ -44,42 +43,100 @@ class GetCartDetailUseCase extends AsyncUseCase<Cart, CartDetail> {
     );
   }
 
-  CartDetailItem? _processItemWithPromotion(
+  CartDetailItem _processItemWithPromotion(
     CartItem cartItem,
     Promotion promotion,
     List<CartItem> items,
   ) {
-    if (promotion is PromotionGetOneFree) {
-      final occurrences = (cartItem.quantity / promotion.quantity).floor();
-      final netAmount = (cartItem.quantity - occurrences).toDecimal() *
-          cartItem.product.price;
-
-      return CartDetailItemPromotion(
-        product: cartItem.product,
-        quantity: cartItem.quantity,
-        netTotal: netAmount,
-        promotion: promotion,
-      );
-    } else if (promotion is PromotionMultipriced) {
-      final occurrences = (cartItem.quantity / promotion.quantity).floor();
-      final occurrencesWithDiscountPrice =
-          (occurrences.toDecimal() * promotion.price);
-      final remainingQuantity =
-          cartItem.quantity - (occurrences * promotion.quantity);
-      final netAmount = occurrencesWithDiscountPrice +
-          remainingQuantity.toDecimal() * cartItem.product.price;
-
-      return CartDetailItemPromotion(
-        product: cartItem.product,
-        quantity: cartItem.quantity,
-        netTotal: netAmount,
-        promotion: promotion,
-      );
-    } else {
-      // Meal deal
-      final mealDealPromotion = promotion as PromotionMealDeal;
+    switch (promotion) {
+      case PromotionGetOneFree():
+        return _processGetOneFreePromotion(cartItem, promotion);
+      case PromotionMultipriced():
+        return _processMultipricedPromotion(cartItem, promotion);
+      case PromotionMealDeal():
+        return _processMealDealPromotion(cartItem, promotion, items);
     }
-
-    return null;
   }
+
+  CartDetailItem _processGetOneFreePromotion(
+    CartItem cartItem,
+    PromotionGetOneFree promotion,
+  ) {
+    final occurrences = (cartItem.quantity / (promotion.quantity + 1)).floor();
+    if (occurrences == 0) {
+      return _getCartDetailItemRegularFromCartItem(cartItem);
+    }
+    final netAmount =
+        (cartItem.quantity - occurrences).toDecimal() * cartItem.product.price;
+
+    return CartDetailItemPromotion(
+      product: cartItem.product,
+      quantity: cartItem.quantity,
+      netTotal: netAmount,
+      promotion: promotion,
+    );
+  }
+
+  CartDetailItem _processMultipricedPromotion(
+    CartItem cartItem,
+    PromotionMultipriced promotion,
+  ) {
+    final occurrences = (cartItem.quantity / promotion.quantity).floor();
+    if (occurrences == 0) {
+      return _getCartDetailItemRegularFromCartItem(cartItem);
+    }
+    final occurrencesWithDiscountPrice =
+        (occurrences.toDecimal() * promotion.price);
+    final remainingQuantity =
+        cartItem.quantity - (occurrences * promotion.quantity);
+    final netAmount = occurrencesWithDiscountPrice +
+        remainingQuantity.toDecimal() * cartItem.product.price;
+
+    return CartDetailItemPromotion(
+      product: cartItem.product,
+      quantity: cartItem.quantity,
+      netTotal: netAmount,
+      promotion: promotion,
+    );
+  }
+
+  CartDetailItem _processMealDealPromotion(
+    CartItem cartItem,
+    PromotionMealDeal promotion,
+    List<CartItem> items,
+  ) {
+    final skuDependency = promotion.skus.firstWhere(
+      (sku) => sku != cartItem.product.sku,
+    );
+    final cartItemPromotionDependency = items.firstWhereOrNull(
+      (cartItem) => cartItem.product.sku == skuDependency,
+    );
+    if (cartItemPromotionDependency == null) {
+      return _getCartDetailItemRegularFromCartItem(cartItem);
+    } else {
+      final occurrences =
+          min(cartItem.quantity, cartItemPromotionDependency.quantity)
+              .toDecimal();
+      final totalItemsWithDiscountedPrice =
+          occurrences * (promotion.price / 2.toDecimal()).toDecimal();
+      final totalItemsWithGrossPrice =
+          (cartItem.quantity.toDecimal() - occurrences) *
+              cartItem.product.price;
+      final netTotal = totalItemsWithDiscountedPrice + totalItemsWithGrossPrice;
+
+      return CartDetailItemPromotion(
+          product: cartItem.product,
+          quantity: cartItem.quantity,
+          netTotal: netTotal,
+          promotion: promotion);
+    }
+  }
+
+  CartDetailItemRegular _getCartDetailItemRegularFromCartItem(
+    CartItem item,
+  ) =>
+      CartDetailItemRegular(
+        product: item.product,
+        quantity: item.quantity,
+      );
 }

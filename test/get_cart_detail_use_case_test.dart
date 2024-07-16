@@ -1,5 +1,6 @@
 import 'package:checkout/modules/cart/domain/entity/cart.dart';
 import 'package:checkout/modules/cart/domain/entity/cart_detail.dart';
+import 'package:checkout/modules/cart/domain/entity/cart_detail_item.dart';
 import 'package:checkout/modules/cart/domain/entity/cart_item.dart';
 import 'package:checkout/modules/cart/domain/use_case/get_cart_detail_use_case.dart';
 import 'package:checkout/modules/product/domain/entity/promotion.dart';
@@ -40,6 +41,22 @@ void main() {
     );
   }
 
+  void assertCartItem(
+    CartDetailItem cartDetailItem, {
+    required int quantity,
+    required Decimal grossTotal,
+    required Decimal netTotal,
+  }) {
+    expect(cartDetailItem.quantity, quantity,
+        reason: 'Match cart item product quantity');
+
+    expect(cartDetailItem.grossTotal, grossTotal,
+        reason: 'Match cart item gross total');
+
+    expect(cartDetailItem.netTotal, netTotal,
+        reason: 'Match cart item net total');
+  }
+
   group('Without promotion', () {
     test(
       'If the item has no promotion, it should simply process as a regular item',
@@ -50,15 +67,30 @@ void main() {
         final cart = Cart([CartItem(Fixtures.productA, productAQuantity)]);
         final result = await useCase.execute(cart);
 
-        expect(result.items.length, 1, reason: 'Should have one item');
+        expect(result.items.length, 1, reason: 'Match items length');
 
-        final expectedGrossAmount =
+        expect(
+          result.items.first is CartDetailItemRegular,
+          true,
+          reason: 'Match item type',
+        );
+
+        final regularCartItem = result.items.first;
+
+        final expectedGrossTotal =
             Fixtures.productA.price * productAQuantity.toDecimal();
+
+        assertCartItem(
+          regularCartItem,
+          quantity: productAQuantity,
+          grossTotal: expectedGrossTotal,
+          netTotal: expectedGrossTotal,
+        );
 
         assertCartTotals(
           result,
-          grossTotal: expectedGrossAmount,
-          netTotal: expectedGrossAmount,
+          grossTotal: expectedGrossTotal,
+          netTotal: expectedGrossTotal,
           discountTotal: Decimal.zero,
           itemCount: productAQuantity,
         );
@@ -68,10 +100,10 @@ void main() {
 
   group('With promotion', () {
     group('Get one free', () {
-      const quantityGetOneFree = 3;
+      const quantityGetNextFree = 3;
       final getOneFreePromotion = PromotionGetOneFree(
         skus: [Fixtures.productA.sku],
-        quantity: quantityGetOneFree,
+        quantity: quantityGetNextFree,
       );
 
       setUp(() => mockPromotions([getOneFreePromotion]));
@@ -79,24 +111,47 @@ void main() {
       test(
         'it should calculate and discount the number of occurrences of the free item',
         () async {
-          const productAQuantity = (quantityGetOneFree * 2) + 2;
+          const productAQuantity = ((quantityGetNextFree + 1) * 2) + 2;
           final cart = Cart([CartItem(Fixtures.productA, productAQuantity)]);
 
           final result = await useCase.execute(cart);
 
-          final expectedGrossAmount =
+          expect(
+            result.items.first is CartDetailItemPromotion,
+            true,
+            reason: 'Match item type',
+          );
+
+          final promotionCartItem =
+              result.items.first as CartDetailItemPromotion;
+
+          expect(
+            promotionCartItem.promotion,
+            getOneFreePromotion,
+            reason: 'Match promotion',
+          );
+
+          final expectedGrossTotal =
               Fixtures.productA.price * productAQuantity.toDecimal();
 
-          final expectedNetAmount =
+          final expectedNetTotal =
               Fixtures.productA.price * (productAQuantity - 2).toDecimal();
 
+          assertCartItem(
+            promotionCartItem,
+            quantity: productAQuantity,
+            grossTotal: expectedGrossTotal,
+            netTotal: expectedNetTotal,
+          );
+
+          // Two free items.
           final expectedDiscountAmount =
               Fixtures.productA.price * 2.toDecimal();
 
           assertCartTotals(
             result,
-            grossTotal: expectedGrossAmount,
-            netTotal: expectedNetAmount,
+            grossTotal: expectedGrossTotal,
+            netTotal: expectedNetTotal,
             discountTotal: expectedDiscountAmount,
             itemCount: productAQuantity,
           );
@@ -104,20 +159,33 @@ void main() {
       );
 
       test(
-        'if no occurrences were found, it should not apply any discount',
+        'if no occurrences were found, it should be treated as a regular item',
         () async {
           const productAQuantity = 1;
           final cart = Cart([CartItem(Fixtures.productA, productAQuantity)]);
 
           final result = await useCase.execute(cart);
 
-          final expectedGrossAmount =
+          expect(
+            result.items.first is CartDetailItemRegular,
+            true,
+            reason: 'Match item type',
+          );
+
+          final expectedGrossTotal =
               Fixtures.productA.price * productAQuantity.toDecimal();
+
+          assertCartItem(
+            result.items.first,
+            quantity: productAQuantity,
+            grossTotal: expectedGrossTotal,
+            netTotal: expectedGrossTotal,
+          );
 
           assertCartTotals(
             result,
-            grossTotal: expectedGrossAmount,
-            netTotal: expectedGrossAmount,
+            grossTotal: expectedGrossTotal,
+            netTotal: expectedGrossTotal,
             discountTotal: Decimal.zero,
             itemCount: productAQuantity,
           );
@@ -144,12 +212,34 @@ void main() {
 
           final result = await useCase.execute(cart);
 
-          final expectedGrossAmount =
+          expect(
+            result.items.first is CartDetailItemPromotion,
+            true,
+            reason: 'Match item type',
+          );
+
+          final promotionCartItem =
+              result.items.first as CartDetailItemPromotion;
+
+          expect(
+            promotionCartItem.promotion,
+            multipricedPromotion,
+            reason: 'Match promotion',
+          );
+
+          final expectedGrossTotal =
               Fixtures.productC.price * productCQuantity.toDecimal();
 
-          final expectedNetAmount =
+          final expectedNetTotal =
               (2.toDecimal() * multipricedPromotion.price) +
                   Fixtures.productC.price;
+
+          assertCartItem(
+            result.items.first,
+            quantity: productCQuantity,
+            grossTotal: expectedGrossTotal,
+            netTotal: expectedNetTotal,
+          );
 
           final expectedDiscountAmount = (2.toDecimal() *
               ((Fixtures.productC.price *
@@ -158,8 +248,8 @@ void main() {
 
           assertCartTotals(
             result,
-            grossTotal: expectedGrossAmount,
-            netTotal: expectedNetAmount,
+            grossTotal: expectedGrossTotal,
+            netTotal: expectedNetTotal,
             discountTotal: expectedDiscountAmount,
             itemCount: productCQuantity,
           );
@@ -167,20 +257,33 @@ void main() {
       );
 
       test(
-        'if no occurrences were found, it should not apply any discount',
+        'if no occurrences were found, it should be treated as a regular item',
         () async {
           const productCQuantity = 1;
           final cart = Cart([CartItem(Fixtures.productC, productCQuantity)]);
 
           final result = await useCase.execute(cart);
 
-          final expectedGrossAmount =
+          expect(
+            result.items.first is CartDetailItemRegular,
+            true,
+            reason: 'Match item type',
+          );
+
+          final expectedGrossTotal =
               Fixtures.productC.price * productCQuantity.toDecimal();
+
+          assertCartItem(
+            result.items.first,
+            quantity: productCQuantity,
+            grossTotal: expectedGrossTotal,
+            netTotal: expectedGrossTotal,
+          );
 
           assertCartTotals(
             result,
-            grossTotal: expectedGrossAmount,
-            netTotal: expectedGrossAmount,
+            grossTotal: expectedGrossTotal,
+            netTotal: expectedGrossTotal,
             discountTotal: Decimal.zero,
             itemCount: productCQuantity,
           );
@@ -210,47 +313,94 @@ void main() {
 
           final result = await useCase.execute(cart);
 
-          final expectedGrossAmount =
-              Fixtures.productC.price * productAQuantity.toDecimal() +
+          expect(
+            result.items.first is CartDetailItemPromotion,
+            true,
+            reason: 'Match item type',
+          );
+
+          final promotionCartItemProductA =
+              result.items.first as CartDetailItemPromotion;
+
+          expect(
+            promotionCartItemProductA.promotion,
+            mealDealPromotion,
+            reason: 'Match promotion',
+          );
+
+          final halfMealDealPrice =
+              (mealDealPromotion.price / 2.toDecimal()).toDecimal();
+
+          assertCartItem(
+            promotionCartItemProductA,
+            quantity: productAQuantity,
+            grossTotal: Fixtures.productA.price * productAQuantity.toDecimal(),
+            // It should be a full priced item + half of the meal deal price
+            netTotal: Fixtures.productA.price + halfMealDealPrice,
+          );
+
+          final promotionCartItemProductB =
+              result.items[1] as CartDetailItemPromotion;
+
+          assertCartItem(
+            promotionCartItemProductB,
+            quantity: productBQuantity,
+            grossTotal: Fixtures.productB.price,
+            // Only half of the meal deal price
+            netTotal: halfMealDealPrice,
+          );
+
+          final expectedCartGrossTotal =
+              Fixtures.productA.price * productAQuantity.toDecimal() +
                   Fixtures.productB.price * productBQuantity.toDecimal();
 
-          final expectedNetAmount =
+          final expectedCartNetTotal =
               mealDealPromotion.price + Fixtures.productA.price;
 
-          final expectedDiscountAmount =
+          final expectedCartDiscountTotal =
               (Fixtures.productA.price + Fixtures.productB.price) -
                   mealDealPromotion.price;
 
           assertCartTotals(
             result,
-            grossTotal: expectedGrossAmount,
-            netTotal: expectedNetAmount,
-            discountTotal: expectedDiscountAmount,
+            grossTotal: expectedCartGrossTotal,
+            netTotal: expectedCartNetTotal,
+            discountTotal: expectedCartDiscountTotal,
             itemCount: productAQuantity + productBQuantity,
           );
         },
       );
 
       test(
-        'if no occurrences were found, it should not apply any discount',
+        'if no occurrences were found, it should be treated as a regular item',
         () async {
-          const productAQuantity = 1;
-          const productCQuantity = 3;
+          const productAQuantity = 4;
           final cart = Cart([
             CartItem(Fixtures.productA, productAQuantity),
-            CartItem(Fixtures.productC, productCQuantity),
           ]);
 
           final result = await useCase.execute(cart);
 
-          final expectedGrossAmount =
-              Fixtures.productA.price * productAQuantity.toDecimal() +
-                  Fixtures.productC.price * productCQuantity.toDecimal();
+          expect(
+            result.items.first is CartDetailItemRegular,
+            true,
+            reason: 'Match item type',
+          );
+
+          final expectedGrossTotal =
+              Fixtures.productA.price * productAQuantity.toDecimal();
+
+          assertCartItem(
+            result.items.first,
+            quantity: productAQuantity,
+            grossTotal: expectedGrossTotal,
+            netTotal: expectedGrossTotal,
+          );
 
           assertCartTotals(
             result,
-            grossTotal: expectedGrossAmount,
-            netTotal: expectedGrossAmount,
+            grossTotal: expectedGrossTotal,
+            netTotal: expectedGrossTotal,
             discountTotal: Decimal.zero,
             itemCount: productAQuantity,
           );
