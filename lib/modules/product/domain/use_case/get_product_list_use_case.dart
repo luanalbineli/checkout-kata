@@ -42,10 +42,11 @@ class GetProductListUseCase
     }
 
     final promotionProducts = products
-        .where((product) => promotion.skus.contains(product.sku))
-        .toList(
-          growable: false,
-        );
+        .where(
+          (product) => promotion.isForProduct(product.sku),
+        )
+        .toList(growable: false);
+
     return PromotionDisplay(promotionProducts, promotion);
   }
 }

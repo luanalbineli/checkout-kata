@@ -19,11 +19,11 @@ class PromotionRemoteDataSourceImpl implements PromotionRemoteDataSource {
 
   static final _promotionList = [
     PromotionMultipriced(
-      skus: const ['B'],
+      sku: 'B',
       quantity: 2,
       price: Decimal.fromJson('1.25'),
     ),
-    const PromotionGetOneFree(skus: ['C'], quantity: 3),
+    const PromotionGetOneFree(sku: 'C', quantity: 3),
     PromotionMealDeal(
       skus: const ['D', 'E'],
       price: Decimal.fromJson('3.0'),

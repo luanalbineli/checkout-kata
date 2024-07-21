@@ -102,7 +102,7 @@ void main() {
     group('Get one free', () {
       const quantityGetNextFree = 3;
       final getOneFreePromotion = PromotionGetOneFree(
-        skus: [Fixtures.productA.sku],
+        sku: Fixtures.productA.sku,
         quantity: quantityGetNextFree,
       );
 
@@ -197,7 +197,7 @@ void main() {
       const quantityMultipriced = 2;
 
       final multipricedPromotion = PromotionMultipriced(
-        skus: [Fixtures.productC.sku],
+        sku: Fixtures.productC.sku,
         quantity: quantityMultipriced,
         price: Decimal.fromJson('2.50'),
       );

@@ -3,6 +3,6 @@ import 'package:collection/collection.dart';
 
 extension PromotionListExtension on Iterable<Promotion> {
   Promotion? getByProductSKU(String sku) => firstWhereOrNull(
-        (promotion) => promotion.skus.contains(sku),
+        (promotion) => promotion.isForProduct(sku),
       );
 }
