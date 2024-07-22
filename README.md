@@ -1,7 +1,7 @@
 # Checkout Kata
 
 The goal of this Kata is to show a list of products and apply discounts in the cart, based on a list
-of dynamic promotions.
+of dynamic promotions. The complete description can be found [here](https://github.com/luanalbineli/checkout-kata/blob/main/docs/description.MD).
 
 ## Main features
 
