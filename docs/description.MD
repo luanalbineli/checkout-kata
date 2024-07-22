@@ -14,13 +14,13 @@ individually. In addition, some items have promotions of any of the following ty
   buy one of each for just £3.
 
 This week’s prices are the following:
-|Item|Unit Price (in pences)|Special Price|
-|--|--|--|--|
-|A|50||
-|B|75|2 for £1|
-|C|25|Buy 3, get one free|
-|D|150|Buy D and E for £3|
-|E|200|Buy D and E for £3|
+| Item | Unit Price (in pences) | Special Price |
+| --- | --- | --- |
+| A | 50 | - |
+| B | 75 | 2 for £1 |
+| C | 25 | Buy 3, get one free |
+| D | 150 | Buy D and E for £3 |
+| E | 200 | Buy D and E for £3 |
 
 Our checkout accepts items in any order so if we scan a B, then an A, then another B, we will
 recognise the two B’s and apply the special promotion of 2 for £1.25.
