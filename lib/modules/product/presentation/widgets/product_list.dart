@@ -1,16 +1,11 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:checkout/constants/app_dimens.dart';
 import 'package:checkout/extensions/context_extensions.dart';
 import 'package:checkout/extensions/text_theme_extensions.dart';
 import 'package:checkout/modules/core/presentation/widgets/error_state.dart';
 import 'package:checkout/modules/core/presentation/widgets/margin.dart';
-import 'package:checkout/modules/product/domain/entity/product_display.dart';
 import 'package:checkout/modules/product/presentation/bloc/product_list_bloc.dart';
-import 'package:checkout/modules/product/presentation/widgets/product_image.dart';
+import 'package:checkout/modules/product/presentation/widgets/product_item.dart';
 import 'package:checkout/modules/product/presentation/widgets/product_loading.dart';
-import 'package:checkout/modules/product/presentation/widgets/product_name.dart';
-import 'package:checkout/modules/product/presentation/widgets/product_price.dart';
-import 'package:checkout/router/app_router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -57,9 +52,8 @@ class ProductList extends StatelessWidget {
               itemCount: state.list.length,
               itemBuilder: (context, index) {
                 final productDisplay = state.list[index];
-                final ProductDisplay(:product) = productDisplay;
-
-                return Card(
+                return ProductItem(productDisplay: productDisplay);
+/*                return Card(
                   clipBehavior: Clip.hardEdge,
                   child: InkWell(
                     onTap: () => _openProductDetail(context, productDisplay),
@@ -91,42 +85,12 @@ class ProductList extends StatelessWidget {
                       ),
                     ),
                   ),
-                );
+                );*/
               },
             ),
           ),
         ],
       ),
-    );
-  }
-
-  void _openProductDetail(
-    BuildContext context,
-    ProductDisplay productDisplay,
-  ) {
-    context.router.push(ProductDetailRoute(productDisplay: productDisplay));
-  }
-
-  Widget _buildAddProductIcon(
-      BuildContext context, ProductDisplay productDisplay) {
-    const addIcon = Icon(
-      Icons.add_rounded,
-    );
-
-    if (productDisplay.promotionDisplay == null) {
-      return addIcon;
-    }
-
-    return Badge(
-      backgroundColor: context.theme.primaryColor,
-      offset: const Offset(-2, -2),
-      label: const Icon(
-        Icons.percent_outlined,
-        size: 12,
-        color: Colors.white,
-      ),
-      largeSize: 12,
-      child: addIcon,
     );
   }
 }

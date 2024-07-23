@@ -10,6 +10,7 @@ import 'package:checkout/modules/product/domain/entity/promotion_display.dart';
 import 'package:checkout/modules/product/presentation/bloc/product_detail_bloc.dart';
 import 'package:checkout/modules/product/presentation/widgets/product_image.dart';
 import 'package:checkout/modules/product/presentation/widgets/product_price.dart';
+import 'package:checkout/modules/product/presentation/widgets/product_promotion_container.dart';
 import 'package:checkout/modules/product/presentation/widgets/quantity_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -183,13 +184,11 @@ class ProductDetail extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomRight,
       child: Padding(
-        padding: const EdgeInsets.only(
-          right: AppDimens.defaultMargin05x,
+        padding: const EdgeInsets.all(
+          AppDimens.defaultMargin05x,
         ),
-        child: Chip(
-          padding: EdgeInsets.zero,
-          backgroundColor: context.theme.primaryColor,
-          label: Text(
+        child: ProductPromotionContainer(
+          child: Text(
             promotionLabel,
             style: context.textTheme.labelSmall?.copyWith(
               color: Colors.white,
