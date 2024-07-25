@@ -17,13 +17,13 @@ import 'package:checkout/modules/cart/domain/repository/cart_repository.dart'
 import 'package:checkout/modules/cart/domain/use_case/add_product_cart_use_case.dart'
     as _i10;
 import 'package:checkout/modules/cart/domain/use_case/delete_cart_item_use_case.dart'
-    as _i13;
+    as _i12;
 import 'package:checkout/modules/cart/domain/use_case/get_cart_detail_use_case.dart'
     as _i19;
 import 'package:checkout/modules/cart/domain/use_case/get_cart_stream_use_case.dart'
     as _i11;
 import 'package:checkout/modules/cart/domain/use_case/update_cart_item_quantity_use_case.dart'
-    as _i12;
+    as _i13;
 import 'package:checkout/modules/cart/presentation/bloc/cart_bloc.dart' as _i21;
 import 'package:checkout/modules/cart/presentation/bloc/cart_button_bloc.dart'
     as _i14;
@@ -63,7 +63,7 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i3.ProductRemoteDataSourceImpl());
     gh.factory<_i4.PromotionRemoteDataSource>(
         () => _i4.PromotionRemoteDataSourceImpl());
-    gh.singleton<_i5.CartLocalDataSource>(() => _i5.CartLocalDataSourceImpl());
+    gh.factory<_i5.CartLocalDataSource>(() => _i5.CartLocalDataSourceImpl());
     gh.factory<_i6.ProductRepository>(
         () => _i7.ProductRepositoryImpl(gh<_i3.ProductRemoteDataSource>()));
     gh.factory<_i8.CartRepository>(
@@ -72,10 +72,10 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i10.AddProductCartUseCase(gh<_i8.CartRepository>()));
     gh.factory<_i11.GetCartStreamUseCase>(
         () => _i11.GetCartStreamUseCase(gh<_i8.CartRepository>()));
-    gh.factory<_i12.UpdateCartItemQuantityUseCase>(
-        () => _i12.UpdateCartItemQuantityUseCase(gh<_i8.CartRepository>()));
-    gh.factory<_i13.DeleteCartItemUseCase>(
-        () => _i13.DeleteCartItemUseCase(gh<_i8.CartRepository>()));
+    gh.factory<_i12.DeleteCartItemUseCase>(
+        () => _i12.DeleteCartItemUseCase(gh<_i8.CartRepository>()));
+    gh.factory<_i13.UpdateCartItemQuantityUseCase>(
+        () => _i13.UpdateCartItemQuantityUseCase(gh<_i8.CartRepository>()));
     gh.factory<_i14.CartButtonBloc>(
         () => _i14.CartButtonBloc(gh<_i11.GetCartStreamUseCase>()));
     gh.factory<_i15.ProductDetailBloc>(
@@ -93,8 +93,8 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i21.CartBloc>(() => _i21.CartBloc(
           gh<_i11.GetCartStreamUseCase>(),
           gh<_i19.GetCartDetailUseCase>(),
-          gh<_i12.UpdateCartItemQuantityUseCase>(),
-          gh<_i13.DeleteCartItemUseCase>(),
+          gh<_i13.UpdateCartItemQuantityUseCase>(),
+          gh<_i12.DeleteCartItemUseCase>(),
         ));
     return this;
   }

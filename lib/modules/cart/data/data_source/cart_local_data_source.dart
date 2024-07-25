@@ -5,10 +5,6 @@ import 'package:injectable/injectable.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 abstract class CartLocalDataSource {
-  CartModel? _last;
-  final StreamController<CartModel> _cartStreamController =
-      StreamController.broadcast();
-
   CartModel get();
 
   Stream<CartModel> getStream();
@@ -16,8 +12,12 @@ abstract class CartLocalDataSource {
   void update(CartModel cartModel);
 }
 
-@Singleton(as: CartLocalDataSource)
+@Injectable(as: CartLocalDataSource)
 class CartLocalDataSourceImpl extends CartLocalDataSource {
+  static CartModel? _last;
+  static final StreamController<CartModel> _cartStreamController =
+      StreamController.broadcast();
+
   CartLocalDataSourceImpl() {
     _cartStreamController.stream.listen((data) {
       _last = data;
