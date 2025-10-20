@@ -9,6 +9,10 @@ of dynamic promotions. The complete description can be found [here](https://gith
 - Product detail screen;
 - Cart screen;
 
+| Product list | Product detail | Cart |
+|--------------|--------------|--------------|
+| ![Product list screen](https://github.com/luanalbineli/checkout-kata/blob/main/screenshots/product_list.png?raw=true) | ![Product detail screen](https://github.com/luanalbineli/checkout-kata/blob/main/screenshots/product_detail.png?raw=true) | ![Cart screen](https://github.com/luanalbineli/checkout-kata/blob/main/screenshots/cart.png?raw=true) |
+
 ## Principles and architecture
 
 - SOLID
