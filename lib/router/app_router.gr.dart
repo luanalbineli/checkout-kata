@@ -31,7 +31,7 @@ class CartRoute extends _i4.PageRouteInfo<void> {
   static _i4.PageInfo page = _i4.PageInfo(
     name,
     builder: (data) {
-      return const _i1.CartScreen();
+      return _i4.WrappedRoute(child: const _i1.CartScreen());
     },
   );
 }
@@ -56,9 +56,11 @@ class ProductDetailRoute extends _i4.PageRouteInfo<ProductDetailRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<ProductDetailRouteArgs>();
-      return _i2.ProductDetailScreen(
-        key: args.key,
-        productDisplay: args.productDisplay,
+      return _i4.WrappedRoute(
+        child: _i2.ProductDetailScreen(
+          key: args.key,
+          productDisplay: args.productDisplay,
+        ),
       );
     },
   );
@@ -98,7 +100,7 @@ class ProductListRoute extends _i4.PageRouteInfo<void> {
   static _i4.PageInfo page = _i4.PageInfo(
     name,
     builder: (data) {
-      return const _i3.ProductListScreen();
+      return _i4.WrappedRoute(child: const _i3.ProductListScreen());
     },
   );
 }

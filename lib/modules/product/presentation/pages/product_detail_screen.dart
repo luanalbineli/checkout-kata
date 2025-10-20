@@ -8,31 +8,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatelessWidget implements AutoRouteWrapper {
   final ProductDisplay productDisplay;
 
   const ProductDetailScreen({super.key, required this.productDisplay});
 
   @override
-  Widget build(BuildContext context) {
+  Widget wrappedRoute(BuildContext context) {
     final bloc = getIt<ProductDetailBloc>()
       ..add(
         ProductDetailEventUpdateQuantity(productDisplay.product, 1),
       );
 
+    return BlocProvider<ProductDetailBloc>(
+        create: (_) => bloc,
+        child: BlocListener<ProductDetailBloc, ProductDetailState>(
+            listener: _handleStateChanges,
+            child: this,),);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         forceMaterialTransparency: true,
+
       ),
-      body: BlocProvider<ProductDetailBloc>(
-        create: (_) => bloc,
-        child: BlocListener<ProductDetailBloc, ProductDetailState>(
-          bloc: bloc,
-          listener: _handleStateChanges,
-          child: ProductDetail(
-            productDisplay: productDisplay,
-          ),
+      body: SafeArea(
+        top: false,
+        child: ProductDetail(
+          productDisplay: productDisplay,
         ),
       ),
     );

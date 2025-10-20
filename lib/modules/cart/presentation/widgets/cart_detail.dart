@@ -136,7 +136,7 @@ class CartDetail extends StatelessWidget {
                         const Spacer(),
                         QuantityPicker(
                           quantity: cartItem.quantity,
-                          inputWidth: AppDimens.quantityPickerInputWidth * 0.5,
+                          inputWidth: AppDimens.quantityPickerInputWidth * 0.8,
                           onPressed: (quantity) {
                             BlocProvider.of<CartBloc>(context).add(
                               CartEventUpdateItemQuantity(
