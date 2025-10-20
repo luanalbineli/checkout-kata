@@ -1,3 +1,4 @@
+// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -19,48 +20,20 @@ import 'package:checkout/modules/product/presentation/pages/product_list_screen.
     as _i3;
 import 'package:flutter/material.dart' as _i5;
 
-abstract class $AppRouter extends _i4.RootStackRouter {
-  $AppRouter({super.navigatorKey});
-
-  @override
-  final Map<String, _i4.PageFactory> pagesMap = {
-    CartRoute.name: (routeData) {
-      return _i4.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i1.CartScreen(),
-      );
-    },
-    ProductDetailRoute.name: (routeData) {
-      final args = routeData.argsAs<ProductDetailRouteArgs>();
-      return _i4.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i2.ProductDetailScreen(
-          key: args.key,
-          productDisplay: args.productDisplay,
-        ),
-      );
-    },
-    ProductListRoute.name: (routeData) {
-      return _i4.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i3.ProductListScreen(),
-      );
-    },
-  };
-}
-
 /// generated route for
 /// [_i1.CartScreen]
 class CartRoute extends _i4.PageRouteInfo<void> {
   const CartRoute({List<_i4.PageRouteInfo>? children})
-      : super(
-          CartRoute.name,
-          initialChildren: children,
-        );
+      : super(CartRoute.name, initialChildren: children);
 
   static const String name = 'CartRoute';
 
-  static const _i4.PageInfo<void> page = _i4.PageInfo<void>(name);
+  static _i4.PageInfo page = _i4.PageInfo(
+    name,
+    builder: (data) {
+      return const _i1.CartScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -72,24 +45,27 @@ class ProductDetailRoute extends _i4.PageRouteInfo<ProductDetailRouteArgs> {
     List<_i4.PageRouteInfo>? children,
   }) : super(
           ProductDetailRoute.name,
-          args: ProductDetailRouteArgs(
-            key: key,
-            productDisplay: productDisplay,
-          ),
+          args:
+              ProductDetailRouteArgs(key: key, productDisplay: productDisplay),
           initialChildren: children,
         );
 
   static const String name = 'ProductDetailRoute';
 
-  static const _i4.PageInfo<ProductDetailRouteArgs> page =
-      _i4.PageInfo<ProductDetailRouteArgs>(name);
+  static _i4.PageInfo page = _i4.PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ProductDetailRouteArgs>();
+      return _i2.ProductDetailScreen(
+        key: args.key,
+        productDisplay: args.productDisplay,
+      );
+    },
+  );
 }
 
 class ProductDetailRouteArgs {
-  const ProductDetailRouteArgs({
-    this.key,
-    required this.productDisplay,
-  });
+  const ProductDetailRouteArgs({this.key, required this.productDisplay});
 
   final _i5.Key? key;
 
@@ -99,18 +75,30 @@ class ProductDetailRouteArgs {
   String toString() {
     return 'ProductDetailRouteArgs{key: $key, productDisplay: $productDisplay}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ProductDetailRouteArgs) return false;
+    return key == other.key && productDisplay == other.productDisplay;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ productDisplay.hashCode;
 }
 
 /// generated route for
 /// [_i3.ProductListScreen]
 class ProductListRoute extends _i4.PageRouteInfo<void> {
   const ProductListRoute({List<_i4.PageRouteInfo>? children})
-      : super(
-          ProductListRoute.name,
-          initialChildren: children,
-        );
+      : super(ProductListRoute.name, initialChildren: children);
 
   static const String name = 'ProductListRoute';
 
-  static const _i4.PageInfo<void> page = _i4.PageInfo<void>(name);
+  static _i4.PageInfo page = _i4.PageInfo(
+    name,
+    builder: (data) {
+      return const _i3.ProductListScreen();
+    },
+  );
 }
