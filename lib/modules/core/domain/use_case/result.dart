@@ -5,8 +5,7 @@ class Result<T> {
 
   Result.error(this.exception)
       : type = ResultType.error,
-        data = null,
-        assert(exception != null);
+        data = null;
 
   final T? data;
   final dynamic exception;

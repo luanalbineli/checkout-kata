@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:checkout/modules/cart/domain/use_case/add_product_cart_use_case.dart';
 import 'package:checkout/modules/product/domain/entity/product.dart';
@@ -20,7 +18,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
     on<ProductDetailEventAddCart>(_addProductCard);
   }
 
-  FutureOr<void> _updateQuantity(
+  void _updateQuantity(
     ProductDetailEventUpdateQuantity event,
     Emitter<ProductDetailState> emit,
   ) {
@@ -32,7 +30,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
     );
   }
 
-  FutureOr<void> _addProductCard(
+  void _addProductCard(
     ProductDetailEventAddCart event,
     Emitter<ProductDetailState> emit,
   ) {

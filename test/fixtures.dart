@@ -2,6 +2,8 @@ import 'package:checkout/modules/product/domain/entity/product.dart';
 import 'package:decimal/decimal.dart';
 
 class Fixtures {
+  Fixtures._();
+  
   static final productA = Product(
     sku: 'A',
     price: Decimal.fromJson('2.40'),

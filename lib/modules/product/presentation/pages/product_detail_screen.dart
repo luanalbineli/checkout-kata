@@ -21,10 +21,12 @@ class ProductDetailScreen extends StatelessWidget implements AutoRouteWrapper {
       );
 
     return BlocProvider<ProductDetailBloc>(
-        create: (_) => bloc,
-        child: BlocListener<ProductDetailBloc, ProductDetailState>(
-            listener: _handleStateChanges,
-            child: this,),);
+      create: (_) => bloc,
+      child: BlocListener<ProductDetailBloc, ProductDetailState>(
+        listener: _handleStateChanges,
+        child: this,
+      ),
+    );
   }
 
   @override
@@ -33,7 +35,6 @@ class ProductDetailScreen extends StatelessWidget implements AutoRouteWrapper {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         forceMaterialTransparency: true,
-
       ),
       body: SafeArea(
         top: false,
@@ -54,7 +55,7 @@ class ProductDetailScreen extends StatelessWidget implements AutoRouteWrapper {
       context.router.maybePop();
     } else if (state is ProductDetailStateItemCartError) {
       const snackBar = SnackBar(
-        content: Text('We couldn\'t add the item now. Please, try again'),
+        content: Text("We couldn't add the item now. Please, try again"),
       );
       context.messenger.showSnackBar(snackBar);
     }

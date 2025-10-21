@@ -85,7 +85,7 @@ class GetCartDetailUseCase extends AsyncUseCase<Cart, CartDetail> {
       return _getCartDetailItemRegularFromCartItem(cartItem);
     }
     final occurrencesWithDiscountPrice =
-        (occurrences.toDecimal() * promotion.price);
+        occurrences.toDecimal() * promotion.price;
     final remainingQuantity =
         cartItem.quantity - (occurrences * promotion.quantity);
     final netAmount = occurrencesWithDiscountPrice +

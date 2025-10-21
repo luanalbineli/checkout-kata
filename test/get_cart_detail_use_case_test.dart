@@ -241,10 +241,10 @@ void main() {
             netTotal: expectedNetTotal,
           );
 
-          final expectedDiscountAmount = (2.toDecimal() *
+          final expectedDiscountAmount = 2.toDecimal() *
               ((Fixtures.productC.price *
                       multipricedPromotion.quantity.toDecimal()) -
-                  multipricedPromotion.price));
+                  multipricedPromotion.price);
 
           assertCartTotals(
             result,

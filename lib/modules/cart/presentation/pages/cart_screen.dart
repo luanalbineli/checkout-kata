@@ -23,8 +23,8 @@ class CartScreen extends StatelessWidget implements AutoRouteWrapper {
       appBar: AppBar(
         title: const Text('Cart'),
       ),
-      body: SafeArea(
-        child: const CartDetail(),
+      body: const SafeArea(
+        child: CartDetail(),
       ),
     );
   }

@@ -58,9 +58,7 @@ class ProductDetail extends StatelessWidget {
           ),
           const Spacer(),
           _buildQuantityPicker(product),
-          const VerticalMargin(
-            margin: AppDimens.defaultMargin,
-          ),
+          const VerticalMargin(),
           _buildAddProductCartButton(context, product),
         ],
       ),
@@ -132,7 +130,9 @@ class ProductDetail extends StatelessWidget {
           Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.3),
+                color: Colors.white.withValues(
+                  alpha: 0.3,
+                ),
               ),
             ),
           ),

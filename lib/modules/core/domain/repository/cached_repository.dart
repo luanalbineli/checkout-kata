@@ -7,7 +7,7 @@ mixin CachedRepository {
     Future<TData> Function() dataIfNotCached,
   ) async {
     if (_cache.containsKey(key)) {
-      final cachedData = _cache[key] as CacheData<TData>;
+      final cachedData = _cache[key]! as CacheData<TData>;
       if (cachedData.expiration.isAfter(DateTime.now())) {
         return cachedData.data;
       }

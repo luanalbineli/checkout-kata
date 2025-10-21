@@ -7,7 +7,7 @@ extension DecimalExtensions on Decimal {
 extension DecimalListExtensions on Iterable<Decimal> {
   Decimal get sum {
     Decimal result = Decimal.zero;
-    for (var value in this) {
+    for (final value in this) {
       result += value;
     }
     return result;

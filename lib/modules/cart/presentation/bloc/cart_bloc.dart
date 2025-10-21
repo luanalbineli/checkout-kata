@@ -40,7 +40,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     );
   }
 
-  FutureOr<void> _updateCartDetail(
+  Future<void>? _updateCartDetail(
     CartEventUpdate event,
     Emitter<CartState> emit,
   ) async {
@@ -62,7 +62,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     emit(nextState);
   }
 
-  FutureOr<void> _updateCartItemQuantity(
+  void _updateCartItemQuantity(
     CartEventUpdateItemQuantity event,
     Emitter<CartState> emit,
   ) {
@@ -71,7 +71,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     _updateCartItemQuantityUseCase.call(params);
   }
 
-  FutureOr<void> _deleteItem(
+  void _deleteItem(
     CartEventDeleteItem event,
     Emitter<CartState> emit,
   ) {

@@ -28,12 +28,15 @@ class CartButtonBloc extends Bloc<CartButtonEvent, CartButtonState> {
     );
   }
 
-  FutureOr<void> _updateCartItemCount(
+  void _updateCartItemCount(
     CartButtonEventUpdate event,
     Emitter<CartButtonState> emit,
   ) {
     final itemCount = event.cart.items.map((item) => item.quantity).sum;
-    emit(CartButtonUpdate(itemCount));
+
+    emit(
+      CartButtonUpdate(itemCount),
+    );
   }
 
   @override

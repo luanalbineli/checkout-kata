@@ -16,7 +16,7 @@ class ProductPrice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var text = RichText(
+    final text = RichText(
       text: TextSpan(
         style: const TextStyle(
           fontWeight: FontWeight.w900,

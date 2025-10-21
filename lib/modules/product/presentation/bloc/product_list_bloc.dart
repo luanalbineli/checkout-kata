@@ -21,11 +21,12 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
     add(const ProductListEventInit());
   }
 
-  FutureOr<void> _init(
+  Future<void> _init(
     ProductListEventInit event,
     Emitter<ProductListState> emit,
   ) async {
     final result = await _getProductListUseCase.call(NoParams.instance);
+
     if (result.data != null) {
       emit(ProductListStateSuccess(result.data!));
     } else {

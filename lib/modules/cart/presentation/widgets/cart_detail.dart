@@ -89,9 +89,7 @@ class CartDetail extends StatelessWidget {
                             name: cartItem.product.name,
                           ),
                         ),
-                        const HorizontalMargin(
-                          margin: AppDimens.defaultMargin,
-                        ),
+                        const HorizontalMargin(),
                         SizedBox(
                           width: AppDimens.cartDeleteButtonSize,
                           height: AppDimens.cartDeleteButtonSize,

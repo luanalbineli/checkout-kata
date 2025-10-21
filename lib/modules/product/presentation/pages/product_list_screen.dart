@@ -25,8 +25,8 @@ class ProductListScreen extends StatelessWidget implements AutoRouteWrapper {
         title: const Text('Checkout Kata'),
         actions: const [CartButton()],
       ),
-      body: SafeArea(
-        child: const ProductList(),
+      body: const SafeArea(
+        child: ProductList(),
       ),
     );
   }
